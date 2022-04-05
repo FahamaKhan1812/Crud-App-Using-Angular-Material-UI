@@ -1,0 +1,115 @@
+<!-- <h1>Forms</h1> -->
+<form
+  [formGroup]="service.form"
+  class="normal-form"
+  (submit)="onSubmit()"
+  #formDirective="ngForm"
+  autocomplete="off"
+>
+  <mat-grid-list cols="2">
+    <mat-grid-tile>
+      <div class="controlers-container">
+        <input type="hidden" formControlName="$key" />
+
+        <mat-form-field appearance="outline">
+          <mat-label>Full Name</mat-label>
+          <input matInput formControlName="fullName" placeholder="Full Name" autocomplete="false"/>
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" placeholder="Email" />
+          <mat-error>Invalid email</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Phone Number</mat-label>
+          <input
+            matInput
+            formControlName="mobile"
+            placeholder="Phone Number*"
+          />
+          <mat-error
+            *ngIf="service.form.controls['mobile'].errors?.['required']"
+            >This field is required</mat-error
+          >
+          <mat-error
+            *ngIf="service.form.controls['mobile'].errors?.['maxlength']"
+            >Maximum 11 characters are allowed</mat-error
+          >
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>City</mat-label>
+          <input
+            matInput
+            formControlName="city"
+            placeholder="City"
+            type="text"
+          />
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <!-- grid 2 -->
+    <mat-grid-tile>
+      <div class="controlers-container">
+        <!-- Gender -->
+        <div class="add-bottom-padding">
+          <label class="example-radio-group"> Select gender </label>
+          <mat-radio-group formControlName="gender">
+            <mat-radio-button class="example-radio-button" value="1">
+              Male
+            </mat-radio-button>
+
+            <mat-radio-button class="example-radio-button" value="2">
+              Female
+            </mat-radio-button>
+            <mat-radio-button class="example-radio-button" value="3">
+              Other
+            </mat-radio-button>
+          </mat-radio-group>
+        </div>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Department</mat-label>
+          <mat-select formControlName="department">
+            <mat-option>None</mat-option>
+            <ng-container *ngFor="let dep of deptService.array">
+              <mat-option value="{{ dep.$key }}">
+                {{ dep.code }}-{{ dep.name }}
+              </mat-option>
+            </ng-container>
+          </mat-select>
+        </mat-form-field>
+        
+        <!--Date  -->
+        <mat-form-field appearance="outline">
+          <mat-label>Hire Date</mat-label>
+          <input formControlName="hiredate" matInput [matDatepicker]="picker" placeholder="Hire Date">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <div class="add-bottom-padding">
+          <mat-checkbox formControlName="isPerment"
+            >Permenent Employee</mat-checkbox
+          >
+        </div>
+
+        <div class="button-row">
+          <button
+            mat-stroked-button
+            color="primary"
+            type="submit"
+            [disabled]="service.form.invalid"
+          >
+           {{btnName}}
+          </button>
+          <button mat-stroked-button color="warn" type="reset">Clear</button>
+        </div>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+</form>

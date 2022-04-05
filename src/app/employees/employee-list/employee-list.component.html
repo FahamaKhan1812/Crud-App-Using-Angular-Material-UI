@@ -1,0 +1,84 @@
+<div class="search-div">
+  <button mat-raised-button (click)="onCreate()">
+    <mat-icon>add</mat-icon>
+    Create
+  </button>
+  <mat-form-field class="search-form-field" appearance="outline" floatLabel="never">
+    <input matInput [(ngModel)]="searchKey" placeholder="Search" autocomplete="off" (keyup)="applyFilter()">
+    <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="onSearchClear()" *ngIf="searchKey">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+</div>
+<div class="mat-elevation-z8">
+  <table mat-table [dataSource]="listData" class="full-width-table" matSort>
+    <!-- Name -->
+    <ng-container matColumnDef="fullName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Full Name</th>
+      <td mat-cell *matCellDef="let element">{{ element.fullName }}</td>
+    </ng-container>
+
+    <!-- Email -->
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef>Email</th>
+      <td mat-cell *matCellDef="let element">{{ element.email }}</td>
+    </ng-container>
+
+    <!-- Mobile -->
+    <ng-container matColumnDef="mobile">
+      <th mat-header-cell *matHeaderCellDef>Mobile</th>
+      <td mat-cell *matCellDef="let element">{{ element.mobile }}</td>
+    </ng-container>
+
+    <!-- City -->
+    <ng-container matColumnDef="city">
+      <th mat-header-cell *matHeaderCellDef>City</th>
+      <td mat-cell *matCellDef="let element">{{ element.city }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="deptName">
+      <th mat-header-cell *matHeaderCellDef>Department Name</th>
+      <td mat-cell *matCellDef="let element">{{ element.deptName }}</td>
+    </ng-container>
+
+    <!-- Action -->
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
+      <td mat-cell *matCellDef="let row">
+        <button mat-icon-button (click)="onEdit(row)">
+          <mat-icon>launch</mat-icon>
+        </button>
+
+        <button mat-icon-button color="warn">
+          <mat-icon>delete_outline</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="loading">
+      <mat-header-cell *matFooterCellDef colspan="6">
+        <mat-spinner></mat-spinner>
+        <!-- <mat-progress-bar mode="query"></mat-progress-bar> -->
+      </mat-header-cell>
+    </ng-container>
+
+    <!-- Headers -->
+    <tr mat-header-row *matHeaderRowDef="displayDataColumns"></tr>
+
+    <!-- Rows -->
+    <tr mat-row *matRowDef="let row; columns: displayDataColumns"></tr>
+    <mat-header-row
+      *matFooterRowDef="['loading']"
+      [ngClass]="{ hide: listData != null }"
+    ></mat-header-row>
+  </table>
+  <mat-paginator
+    #paginator
+    [length]="listData?.data?.length"
+    [pageIndex]="0"
+    [pageSize]="5"
+    [pageSizeOptions]="[1, 5, 10, 20]"
+    aria-label="Select page"
+  >
+  </mat-paginator>
+</div>
